@@ -30,8 +30,10 @@ function checkForMatch(){
 	if(cardsInPlay[0] === cardsInPlay[1]){
 		goodPicks++;
 		alert("A Match :) You have " + goodPicks + " of " + turns + " tries correct.");
+		reset()
 	} else{
 		alert("Nope :( Try again. " + goodPicks + " of " + turns + " tries correct.");
+		reset()
 	}
 }
 
@@ -89,6 +91,6 @@ function reset(){
 	createBoard();
 }
 
-document.getElementById('reset').addEventListener('click', reset);
+//document.getElementById('reset').addEventListener('click', reset);
 
 createBoard();
