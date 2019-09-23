@@ -2,44 +2,93 @@ var cards = [
 	{
 		rank: "queen",
 		suit: "hearts",
-		file: "images/queen-of-hearts.png"
+		cardImage: "images/queen-of-hearts.png"
 	},
 	{
 		rank: "queen",
 		suit: "diamonds",
-		file: "images/queen-of-diamonds.png"
+		cardImage: "images/queen-of-diamonds.png"
 	}, 
 	{
 		rank: "king",
 		suit: "hearts",
-		file: "images/king-of-hearts.png"
+		cardImage: "images/king-of-hearts.png"
 	},
 	{
 		rank: "king",
 		suit: "diamonds",
-		file: "images/king-of-diamonds.png"
+		cardImage: "images/king-of-diamonds.png"
 	}
 	];
 
 var cardsInPlay = [];
+var goodPicks = 0;
+var badPicks = 0;
 
 function checkForMatch(){
 	if(cardsInPlay[0] === cardsInPlay[1]){
-			alert("It's a Match!");
-		} else(alert("Sorry, try again!"))
+		goodPicks++;
+		alert("It's a Match! " + goodPicks + "/" + badPicks);
+	} else{
+		badPicks++;
+		alert("Sorry try again. " + goodPicks + "/" + badPicks);
+	}
 }
 
-function flipCard(cardId){
-	console.log("User flipped " + cards[cardId].rank);
-	cardsInPlay.push(cards[cardId].rank);
-	console.log(cards[cardId].suit)
-	console.log(cards[cardId].file);
-		
+function flipCard(){
+		var cardId = this.getAttribute('data-id');
+
+		this.setAttribute('src', cards[cardId].cardImage);
+
+		cardsInPlay.push(cards[cardId].rank);
+
+		if(cardsInPlay.length === 2){
+			setTimeout(function(){checkForMatch();}, 333);
+		}
+	}
+
+function randomIndex() {
+	return Math.floor(cards.length * Math.random());
 }
 
-flipCard(0);
-flipCard(2);
-checkForMatch();
+function createBoard(){
+	var allCards = [];
 
+	for(var i = 0; i < cards.length; i++){
+		var cardElement = document.createElement('img');
+		var nextCard = randomIndex();
+		var c;
 
+		for (c = 0; c < allCards.length; c++){ //check all cards so far
+			if (allCards[c] === nextCard){ //found
+				nextCard = randomIndex() //generate anouther card
+				c = -1; //check from the top
+			}
+		}
+		if(c === allCards.length){ //not found in allCards
+			allCards.push(nextCard); // add to allCards
+		}
 
+		cardElement.setAttribute('src', 'images/back.png');
+		cardElement.setAttribute('data-id', nextCard);
+
+		document.getElementById('game-board').appendChild(cardElement);
+
+		cardElement.addEventListener('click', flipCard);
+		}
+}
+
+function reset(){
+	var board = document.getElementById('game-board');
+
+	for (var i = 0; i < cards.length; i++){
+		board.removeChild(board.firstChild);
+	}
+
+	cardsInPlay = [];
+	createBoard();
+}
+
+document.getElementById('reset').addEventListener('click', reset);
+
+createBoard();
