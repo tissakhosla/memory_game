@@ -23,15 +23,15 @@ var cards = [
 
 var cardsInPlay = [];
 var goodPicks = 0;
-var badPicks = 0;
+var turns = 0;
 
 function checkForMatch(){
+	turns++;
 	if(cardsInPlay[0] === cardsInPlay[1]){
 		goodPicks++;
-		alert("It's a Match! " + goodPicks + "/" + badPicks);
+		alert("A Match :) You have " + goodPicks + " of " + turns + " tries correct.");
 	} else{
-		badPicks++;
-		alert("Sorry try again. " + goodPicks + "/" + badPicks);
+		alert("Nope :( Try again. " + goodPicks + " of " + turns + " tries correct.");
 	}
 }
 
